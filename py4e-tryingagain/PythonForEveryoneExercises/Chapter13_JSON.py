@@ -6,7 +6,7 @@ Created on Feb 9, 2024
 
 import json
 # This example translates directly to a Python dictionary data structure
-data = '''
+data ='''
 {
   "name" : "Chuck",
   "phone" : {
@@ -17,12 +17,12 @@ data = '''
      "hide" : "yes"
    }
 }'''
-
+'''
 info = json.loads(data)
 print('Name:', info["name"])
 print('Hide:', info["email"]["hide"])
 print('Phone number:', info["phone"]["number"],"\n")
-
+'''
 #The next example takes a JSON array of objects and converts to a Python list of dictionaries
 
 data = '''
