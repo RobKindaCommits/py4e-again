@@ -32,5 +32,35 @@ cur.execute ('''CREATE TABLE Track (
 fh=open('tracks.csv')
 for line in fh:
     #if line.startswith('From: '): print(line)
+    line=line.strip()
+    #print(line)
     pieces = line.split(',')
-    print (pieces[0])
+    if len(pieces) < 6 : continue
+    title = (pieces[0])
+    artist = (pieces[1])
+    albumtitle = (pieces[2])
+    genre = (pieces[6])
+    #print (name, artist, album, genre)
+    cur.execute('''INSERT OR IGNORE INTO Artist (name) 
+        VALUES ( ? )''', ( artist, ) )
+    cur.execute('SELECT id FROM Artist WHERE name = ? ', (artist, ))
+    artist_id = cur.fetchone()[0]
+    
+    cur.execute('''INSERT OR IGNORE INTO Genre (name) 
+        VALUES ( ? )''', ( genre, ) )
+    cur.execute('SELECT id FROM Genre WHERE name = ? ', (genre, ))
+    genre_id = cur.fetchone()[0]
+
+    cur.execute('''INSERT OR IGNORE INTO Album (title, artist_id) 
+        VALUES ( ?, ? )''', ( albumtitle, artist_id ) )
+    cur.execute('SELECT id FROM Album WHERE title = ? ', (albumtitle, ))
+    album_id = cur.fetchone()[0]
+
+    cur.execute('''INSERT OR REPLACE INTO Track
+        (title, album_id, genre_id) 
+        VALUES ( ?, ?, ?)''', 
+        ( title, album_id, genre_id ) )
+
+    conn.commit()
+
+    
